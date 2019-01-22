@@ -3,3 +3,4 @@ CREATE DATABASE gamedb;
 
 DROP DATABASE IF EXISTS gametestdb;
 CREATE DATABASE gametestdb;
+
