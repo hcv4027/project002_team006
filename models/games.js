@@ -6,7 +6,7 @@ module.exports = function (sequelize, DataTypes) {
         name: DataTypes.STRING
     });
     Games.associate = function(models) {
-        Games.belongsTo(models.Users, {
+        Games.belongsToMany(models.Users, {
             foreignKey: {
                 allowNull: false
             }
