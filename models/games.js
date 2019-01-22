@@ -1,16 +1,10 @@
 module.exports = function (sequelize, DataTypes) {
     var Games = sequelize.define("users", {
-        id: DataTypes.STRING,
-        //TODO Look into Guid datatypes
-        guid: DataTypes.(),
-        name: DataTypes.STRING
+        guid: DataTypes.STRING,
+        title: DataTypes.STRING
     });
     Games.associate = function(models) {
-        Games.belongsToMany(models.Users, {
-            foreignKey: {
-                allowNull: false
-            }
-        })
+        Games.belongsToMany(models.Users, {through: 'UserCollection', foreignKey: 'guid'})
     }
     return Games;
 };

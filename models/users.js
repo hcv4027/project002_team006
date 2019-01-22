@@ -1,14 +1,11 @@
 module.exports = function (sequelize, DataTypes) {
     var Users = sequelize.define("users", {
-        users: DataTypes.STRING,
-        games: DataTypes.STRING
+        username: DataTypes.STRING,
     });
 
-User.associate = function(models) {
-    User.hasMany(models.Games, {
-        onDelete: "cascade"
-    });
-};
+    Users.associate = function(models) {
+        Users.hasMany(models.Games, {through: 'UserCollection', foreignKey: 'userId'});
+    };
     return Users;
 };
 
