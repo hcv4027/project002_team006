@@ -4,7 +4,7 @@ module.exports = function (sequelize, DataTypes) {
     });
 
     Users.associate = function(models) {
-        Users.hasMany(models.Games, {through: 'UserCollection', foreignKey: 'userId'});
+        Users.belongsToMany(models.Games, {through: 'UserCollection', foreignKey: 'userId'});
     };
     return Users;
 };
