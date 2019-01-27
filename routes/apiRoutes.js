@@ -1,24 +1,31 @@
-var db = require("../models");
+const db = require('../models');
 
 module.exports = function(app) {
-  // Get all examples
-  app.get("/api/examples", function(req, res) {
-    db.Example.findAll({}).then(function(dbExamples) {
-      res.json(dbExamples);
+    // Route for pulling collection
+    app.get("/api/collection/:id", function(req, res) {
+        let userId = req.params.id;
+        db.User.findById(userId).then(function(user){
+            user.getGames().then(function (dbusergame) {
+                let handlebarsObj = {
+                    collection: dbusergame
+                };                
+                console.log(handlebarsObj);
+                res.json(handlebarsObj);
+                // res.render("index", handlebarsObj);
+            })
+        });
     });
-  });
-
-  // Create a new example
-  app.post("/api/examples", function(req, res) {
-    db.Example.create(req.body).then(function(dbExample) {
-      res.json(dbExample);
+    // Route for adding a game to a collection
+    app.get("/api/collection/:userId/add/:gameId", function(req,res) {
+        let userId = req.params.userId;
+        let gameId = req.params.gameId;
+        db.User.findById(userId).then(function(user){
+            db.Game.findById(gameId).then(function(game){
+                user.addGame(game).then(function(dbusergame) {
+                    res.json(dbusergame);
+                    console.log(dbusergame);
+                });
+            });
+        });
     });
-  });
-
-  // Delete an example by id
-  app.delete("/api/examples/:id", function(req, res) {
-    db.Example.destroy({ where: { id: req.params.id } }).then(function(dbExample) {
-      res.json(dbExample);
-    });
-  });
 };
