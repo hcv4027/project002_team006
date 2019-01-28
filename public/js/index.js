@@ -54,6 +54,7 @@ function gameSearch() {
                 console.log("First platform listed is: "+response.results[0].platforms[0].abbreviation);
                 console.log("Guid is: "+response.results[0].guid);
                 
+                // Big block of table construction using jQuery!  This will create a table displaying the results of the search query, with buttons to add a game to your collection.
                 let resultsTableDiv = $('#searchResults');
                 let resultsTableMain = $('<table>');
                 let resultsTableBody = $('<tbody>');
@@ -72,17 +73,23 @@ function gameSearch() {
                     resultsTableNameDisplay.append(resultsTableName);
                     resultsTableDiv.append(resultsTableNameDisplay);
                     let resultsTablePlatformsDisplay = $('<td>');
-                    let resultsTablePlatforms;
-                    for (let j = 0; j < response.results[i].platforms.length; j++) {
-                        let platformLoop = response.results[i].plaforms[j].abbreviation;
-                        resultsTablePlatforms.append(platformLoop);
+                    let currentResults = response.results[i];
+                    for (let j = 0; j < currentResults.platforms.length; j++) {
+                        let platformLoop = currentResults.platforms[j].abbreviation;
+                        resultsTablePlatformsDisplay.append(platformLoop);
+                        if (j < currentResults.platforms.length) {
+                            resultsTablePlatformsDisplay.append(" / ");
+                        }
                     }
-                    resultsTablePlatformsDisplay.append(resultsTablePlatforms);
                     resultsTableDiv.append(resultsTablePlatformsDisplay);
                     let resultsTableButtonDisplay = $('<td>');
                     let resultsTableButton = $('<a>');
-                    resultsTableButton.attr("class", "btn-floating btn-small waves-effect waves-light grey darken-1");
+                    resultsTableButton.addClass("btn-floating btn-small waves-effect waves-light grey darken-1");
                     resultsTableButton.attr("id", "addToCollection");
+                    let resultsTableButtonIcon = $('<i>');
+                    resultsTableButtonIcon.addClass("material-icons")
+                    resultsTableButtonIcon.append("save")
+                    resultsTableButton.append(resultsTableButtonIcon);
                     resultsTableButtonDisplay.append(resultsTableButton);
                     resultsTableDiv.append(resultsTableButtonDisplay);
                 }
