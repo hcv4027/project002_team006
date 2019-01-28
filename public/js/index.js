@@ -106,23 +106,26 @@ function gameSearch() {
     });
 }
 
+// Function to add a game from search results to your collection.
 function addToCollection() {
     $(".addToCollection").on("click", function() {
         let resultId = $(this).attr("data-resultId");
         let titleId = "#gameNameResult"+resultId;
         let dataId = "data-name"+resultId;
-        console.log("titleId is "+titleId);
-        console.log("dataId is "+dataId);
         let title = $(titleId).attr(dataId);
         let guid = $(this).attr("data-guid");
-        console.log("resultId is: "+resultId);
-        console.log("guid is: "+guid);
-        console.log("Selected game title is: "+title);
-        // $.ajax('/api/game/'+title+'/'+guid)
-        //     .then(function(response) {
-
-        //     });
-        // $.ajax('/api/collection/'+userId+'/add/'+gameId)
+        // Query our API to check to see if the game already exists.  If it doesn't, create it in our games table, then add it to collection.  If it does, just add to collection.
+        $.ajax('/api/game/'+title+'/'+guid)
+            .then(function(response) {
+                console.log(response);
+                let gameId = response[0].id
+                console.log("Ajax query to local API complete.  gameId is: "+gameId);
+                $.ajax('/api/collection/'+userId+'/add/'+gameId)
+                    .then(function(response) {
+                        console.log("Add to collection response is:");
+                        console.log(response);
+                    });
+            });
     });
 }
 
