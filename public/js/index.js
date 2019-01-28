@@ -55,6 +55,7 @@ function gameSearch() {
                 // Big block of table construction using jQuery!  This will create a table displaying the results of the search query, with buttons to add a game to your collection.
                 let resultsTableDiv = $('#searchResultsTable');
                 let resultsTableMain = $('<table>');
+                resultsTableMain.addClass('highlight centered responsive-table');
                 let resultsTableBody = $('<tbody>');
                 resultsTableDiv.append(resultsTableMain);
                 resultsTableMain.append(resultsTableBody);
