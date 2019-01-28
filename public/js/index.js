@@ -6,6 +6,7 @@ $(document).ready(function() {
     // $('.modal').modal();
     usernameSelect();
     gameSearch();
+    $('#searchResults').hide();
 });
 
 
@@ -46,20 +47,16 @@ function gameSearch() {
     $('#search').keypress(function(event){
         // Checks to ensure Enter keypress
         if(event.which == 13) {
+            $('#searchResultsTable').empty();
             // Check to see if user is logged in
             if (userId != null) {
             // Map the text written in search box to variable gameTitle
             let gameTitle = $('#search').val().trim();
             // Run AJAX query against API route for search then perform some logic with the response.
             $.ajax('/api/search/'+gameTitle).then(function(response){
-                console.log("Results:");
-                console.log(response);
-                console.log("Name is: "+response.results[0].name);
-                console.log("Boxart URL is: "+response.results[0].image.icon_url);
-                console.log("First platform listed is: "+response.results[0].platforms[0].abbreviation);
-                console.log("Guid is: "+response.results[0].guid);
+                $('#searchResults').show();
                 // Big block of table construction using jQuery!  This will create a table displaying the results of the search query, with buttons to add a game to your collection.
-                let resultsTableDiv = $('#searchResults');
+                let resultsTableDiv = $('#searchResultsTable');
                 let resultsTableMain = $('<table>');
                 let resultsTableBody = $('<tbody>');
                 resultsTableDiv.append(resultsTableMain);
@@ -92,7 +89,7 @@ function gameSearch() {
                     for (let j = 0; j < currentResultsPlatformLength; j++) {
                         let platformLoop = currentResults.platforms[j].abbreviation;
                         resultsTablePlatformsDisplay.append(platformLoop);
-                        resultsTablePlatformsDisplay.attr("data-platforms"+i, platformLoop);
+                        resultsTablePlatformsDisplay.attr("data-platforms"+i+j, platformLoop);
                         if (j < (currentResults.platforms.length - 1)) {
                             resultsTablePlatformsDisplay.append(" / ");
                         }
@@ -135,7 +132,7 @@ function addToCollection() {
                     .then(function(response) {
                         console.log("Add to collection response is:");
                         console.log(response);
-                        $("#searchResults").empty();
+                        $("#searchResultsTable").empty();
                     });
             });
     });
