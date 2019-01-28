@@ -10,15 +10,10 @@ $(document).ready(function() {
     $('#collectionName').hide();
 });
 
-
-    // Display modal for user selection
-    // $('#userSelection').modal('open');
-
-
 // On clicking the Submit button, this will run the API route for user login/creation.  Returned object will be used to populate #username, as well as store the userId global variable for later use.
 function usernameSelect() {
-    $('#usernameInput').on("click", function(event){
-        if (userId == null) {
+    $('#usernameText').keypress(function(event){
+        if (event.which == 13 && userId == null) {
             // Pull username string out of text input
             let userCheck = $('#usernameText').val().trim();
             // Hit API and run the route for user login/creation
