@@ -7,6 +7,7 @@ $(document).ready(function() {
     usernameSelect();
     gameSearch();
     $('#searchResults').hide();
+    $('#collectionName').hide();
 });
 
 
@@ -32,8 +33,9 @@ function usernameSelect() {
                         userId = result[0].id;
                         console.log("userId is "+userId);
                         // Display the returned username in the appropriate div element.
-                        let usernameDiv = $('#username');
+                        let usernameDiv = $('.username');
                         usernameDiv.append(result[0].username);
+                        $('#collectionName').show();
                         showCollection();
                     }
                 );
@@ -60,24 +62,24 @@ function gameSearch() {
                 let resultsTableMain = $('<table>');
                 let resultsTableBody = $('<tbody>');
                 resultsTableDiv.append(resultsTableMain);
-                resultsTableDiv.append(resultsTableBody);
+                resultsTableMain.append(resultsTableBody);
                 for (let i = 0; i < response.results.length; i++) {
                     let currentResults = response.results[i];
                     let resultsTableRow = $('<tr>');
-                    resultsTableDiv.append(resultsTableRow);
+                    resultsTableBody.append(resultsTableRow);
                     let resultsTableBoxartDisplay = $('<td>');
                     let resultsTableBoxart = $('<img>');
                     resultsTableBoxart.attr('src', currentResults.image.icon_url);
                     resultsTableBoxart.attr("data-boxart"+i, currentResults.image.icon_url);
                     resultsTableBoxartDisplay.append(resultsTableBoxart);
-                    resultsTableDiv.append(resultsTableBoxartDisplay);
+                    resultsTableRow.append(resultsTableBoxartDisplay);
                     let resultsTableNameDisplay = $('<td>');
                     let resultsTableName = currentResults.name;
                     // Store the Title of the game for use in collection add
                     resultsTableNameDisplay.attr("data-name"+i, currentResults.name);
                     resultsTableNameDisplay.attr("id", "gameNameResult"+i);
                     resultsTableNameDisplay.append(resultsTableName);
-                    resultsTableDiv.append(resultsTableNameDisplay);
+                    resultsTableRow.append(resultsTableNameDisplay);
                     let resultsTablePlatformsDisplay = $('<td>');
                     let currentResultsPlatformLength;
                     if (currentResults.platforms === null) {
@@ -94,7 +96,7 @@ function gameSearch() {
                             resultsTablePlatformsDisplay.append(" / ");
                         }
                     }
-                    resultsTableDiv.append(resultsTablePlatformsDisplay);
+                    resultsTableRow.append(resultsTablePlatformsDisplay);
                     let resultsTableButtonDisplay = $('<td>');
                     let resultsTableButton = $('<a>');
                     resultsTableButton.addClass("btn-floating btn-small waves-effect waves-light grey darken-1 addToCollection");
@@ -105,7 +107,7 @@ function gameSearch() {
                     resultsTableButtonIcon.append("save")
                     resultsTableButton.append(resultsTableButtonIcon);
                     resultsTableButtonDisplay.append(resultsTableButton);
-                    resultsTableDiv.append(resultsTableButtonDisplay);
+                    resultsTableRow.append(resultsTableButtonDisplay);
                 }
                 addToCollection();
             });
@@ -143,9 +145,10 @@ function showCollection() {
         // Big block of table construction using jQuery!  This will create a table displaying the user's collection, with buttons to remove a game from your collection.
         let resultsTableDiv = $('#collection');
         let resultsTableMain = $('<table>');
+        resultsTableMain.addClass('highlight centered responsive-table');
         let resultsTableBody = $('<tbody>');
         resultsTableDiv.append(resultsTableMain);
-        resultsTableDiv.append(resultsTableBody);
+        resultsTableMain.append(resultsTableBody);
         console.log("collection object result is ");
         console.log(collection);
         console.log("---------------");
@@ -156,20 +159,20 @@ function showCollection() {
                     console.log(response);
                     let currentResults = response.results;
                     let resultsTableRow = $('<tr>');
-                    resultsTableDiv.append(resultsTableRow);
+                    resultsTableBody.append(resultsTableRow);
                     let resultsTableBoxartDisplay = $('<td>');
                     let resultsTableBoxart = $('<img>');
                     resultsTableBoxart.attr('src', currentResults.image.icon_url);
                     resultsTableBoxart.attr("data-boxart"+i, currentResults.image.icon_url);
                     resultsTableBoxartDisplay.append(resultsTableBoxart);
-                    resultsTableDiv.append(resultsTableBoxartDisplay);
+                    resultsTableRow.append(resultsTableBoxartDisplay);
                     let resultsTableNameDisplay = $('<td>');
                     let resultsTableName = currentResults.name;
                     // Store the Title of the game for use in collection add
                     resultsTableNameDisplay.attr("data-name"+i, currentResults.name);
                     resultsTableNameDisplay.attr("id", "collectionGameNameResult"+i);
                     resultsTableNameDisplay.append(resultsTableName);
-                    resultsTableDiv.append(resultsTableNameDisplay);
+                    resultsTableRow.append(resultsTableNameDisplay);
                     let resultsTablePlatformsDisplay = $('<td>');
                     let currentResultsPlatformLength;
                     if (currentResults.platforms === null) {
@@ -186,7 +189,7 @@ function showCollection() {
                             resultsTablePlatformsDisplay.append(" / ");
                         }
                     }
-                    resultsTableDiv.append(resultsTablePlatformsDisplay);
+                    resultsTableRow.append(resultsTablePlatformsDisplay);
                     let resultsTableButtonDisplay = $('<td>');
                     let resultsTableButton = $('<a>');
                     resultsTableButton.addClass("btn-floating btn-small waves-effect waves-light grey darken-1 removeFromCollection");
@@ -197,7 +200,7 @@ function showCollection() {
                     resultsTableButtonIcon.append("delete_forever")
                     resultsTableButton.append(resultsTableButtonIcon);
                     resultsTableButtonDisplay.append(resultsTableButton);
-                    resultsTableDiv.append(resultsTableButtonDisplay);
+                    resultsTableRow.append(resultsTableButtonDisplay);
                 });
         };
     });
