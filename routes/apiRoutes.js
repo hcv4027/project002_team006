@@ -31,9 +31,9 @@ module.exports = function(app) {
             }
         }).then(function(game) {
             res.json(game);
-            // if (game[1] === true) {
-            //     addGameData(game[0].id, guid);
-            // }
+            if (game[1] === true) {
+                addGameData(game[0].id, guid);
+            }
         });
     });
 

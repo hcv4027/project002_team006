@@ -75,6 +75,7 @@ function gameSearch() {
                     let resultsTableName = currentResults.name;
                     // Store the Title of the game for use in collection add
                     resultsTableNameDisplay.attr("data-name"+i, currentResults.name);
+                    resultsTableNameDisplay.attr("id", "gameNameResult"+i);
                     resultsTableNameDisplay.append(resultsTableName);
                     resultsTableDiv.append(resultsTableNameDisplay);
                     let resultsTablePlatformsDisplay = $('<td>');
@@ -108,10 +109,19 @@ function gameSearch() {
 function addToCollection() {
     $(".addToCollection").on("click", function() {
         let resultId = $(this).attr("data-resultId");
+        let titleId = "#gameNameResult"+resultId;
+        let dataId = "data-name"+resultId;
+        console.log("titleId is "+titleId);
+        console.log("dataId is "+dataId);
+        let title = $(titleId).attr(dataId);
         let guid = $(this).attr("data-guid");
         console.log("resultId is: "+resultId);
         console.log("guid is: "+guid);
-        // $.ajax('/api/game/')
+        console.log("Selected game title is: "+title);
+        // $.ajax('/api/game/'+title+'/'+guid)
+        //     .then(function(response) {
+
+        //     });
         // $.ajax('/api/collection/'+userId+'/add/'+gameId)
     });
 }
