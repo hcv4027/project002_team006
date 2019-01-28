@@ -1,4 +1,5 @@
 const db = require('../models');
+const axios = require('axios');
 
 module.exports = function(app) {
     app.get("/", function(req, res) {
@@ -46,5 +47,16 @@ module.exports = function(app) {
             res.json(user);
             // res.render("index", handlebarsObj);
         });
+    });
+    // Route for running the search query
+    app.get("/api/search/:gametitle", function(req, res) {
+        let gametitle = req.params.gametitle
+        let queryURL = "https://www.giantbomb.com/api/search/?api_key="+process.env.API+"&query="+gametitle+"&limit=10&resources=game&format=json&field_list=name,guid,image,platforms"
+        axios
+            .get(queryURL)
+            .then(function(response){
+                console.log(response.data);
+                res.json(response.data);
+            });
     });
 };

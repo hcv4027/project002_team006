@@ -45,10 +45,10 @@ function gameSearch() {
         if(event.which == 13) {
             // Map the text written in search box to variable gameTitle
             let gameTitle = $('#search').val().trim();
-            // Concatenate the gameTitle into the queryURL for AJAX use.
-            let queryURL = 'https://www.giantbomb.com/api/search/?api_key=b380d9444fd2c487e9c742b033394e9db0e56d68&query='+gameTitle+'&limit=10&resources=game&format=json&field_list=name,guid,image,platforms'
-            // Run AJAX query then perform some logic with the response.
-            $.ajax(queryURL).then(function(response){
+            // Run AJAX query against API route for search then perform some logic with the response.
+            $.ajax('/api/search/'+gameTitle).then(function(response){
+                console.log("Results:");
+                console.log(response);
                 console.log("Name is: "+response.results[0].name);
                 console.log("Boxart URL is: "+response.results[0].image.icon_url);
                 console.log("First platform listed is: "+response.results[0].platforms[0].abbreviation);
