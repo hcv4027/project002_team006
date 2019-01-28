@@ -32,7 +32,7 @@ function usernameSelect() {
                         // Display the returned username in the appropriate div element.
                         let usernameDiv = $('#username');
                         usernameDiv.append(result[0].username);
-                        showCollection();
+                        // showCollection();
                     }
                 );
         });
@@ -44,6 +44,8 @@ function gameSearch() {
     $('#search').keypress(function(event){
         // Checks to ensure Enter keypress
         if(event.which == 13) {
+            // Check to see if user is logged in
+            if (userId != null) {
             // Map the text written in search box to variable gameTitle
             let gameTitle = $('#search').val().trim();
             // Run AJAX query against API route for search then perform some logic with the response.
@@ -61,19 +63,21 @@ function gameSearch() {
                 resultsTableDiv.append(resultsTableMain);
                 resultsTableDiv.append(resultsTableBody);
                 for (let i = 0; i < response.results.length; i++) {
+                    let currentResults = response.results[i];
                     let resultsTableRow = $('<tr>');
                     resultsTableDiv.append(resultsTableRow);
                     let resultsTableBoxartDisplay = $('<td>');
                     let resultsTableBoxart = $('<img>');
-                    resultsTableBoxart.attr('src', response.results[i].image.icon_url);
+                    resultsTableBoxart.attr('src', currentResults.image.icon_url);
                     resultsTableBoxartDisplay.append(resultsTableBoxart);
                     resultsTableDiv.append(resultsTableBoxartDisplay);
                     let resultsTableNameDisplay = $('<td>');
-                    let resultsTableName = response.results[i].name;
+                    let resultsTableName = currentResults.name;
+                    // Store the Title of the game for use in collection add
+                    resultsTableNameDisplay.attr("data-name"+i, currentResults.name);
                     resultsTableNameDisplay.append(resultsTableName);
                     resultsTableDiv.append(resultsTableNameDisplay);
                     let resultsTablePlatformsDisplay = $('<td>');
-                    let currentResults = response.results[i];
                     for (let j = 0; j < currentResults.platforms.length; j++) {
                         let platformLoop = currentResults.platforms[j].abbreviation;
                         resultsTablePlatformsDisplay.append(platformLoop);
@@ -84,8 +88,9 @@ function gameSearch() {
                     resultsTableDiv.append(resultsTablePlatformsDisplay);
                     let resultsTableButtonDisplay = $('<td>');
                     let resultsTableButton = $('<a>');
-                    resultsTableButton.addClass("btn-floating btn-small waves-effect waves-light grey darken-1");
-                    resultsTableButton.attr("id", "addToCollection");
+                    resultsTableButton.addClass("btn-floating btn-small waves-effect waves-light grey darken-1 addToCollection");
+                    resultsTableButton.attr("data-guid", currentResults.guid);
+                    resultsTableButton.attr("data-resultId", i);
                     let resultsTableButtonIcon = $('<i>');
                     resultsTableButtonIcon.addClass("material-icons")
                     resultsTableButtonIcon.append("save")
@@ -93,17 +98,24 @@ function gameSearch() {
                     resultsTableButtonDisplay.append(resultsTableButton);
                     resultsTableDiv.append(resultsTableButtonDisplay);
                 }
+                addToCollection();
             });
+            }
         }
     });
 }
 
 function addToCollection() {
-    $("#addToCollection").on("click", function() {
-        $.ajax('/api/collection/'+userId+'/add/'+gameId)
+    $(".addToCollection").on("click", function() {
+        let resultId = $(this).attr("data-resultId");
+        let guid = $(this).attr("data-guid");
+        console.log("resultId is: "+resultId);
+        console.log("guid is: "+guid);
+        // $.ajax('/api/game/')
+        // $.ajax('/api/collection/'+userId+'/add/'+gameId)
     });
 }
 
-function showCollection() {
+// function showCollection() {
 
-}
+// }

@@ -22,17 +22,18 @@ module.exports = function(app) {
     });
 
     // Route for looking up a game in the Games table, and creating a new row if the game does not exist
-    app.get("/api/game/:gamename", function(req, res) {
+    app.get("/api/game/:gamename/:guid", function(req, res) {
         let gameName = req.params.gamename;
+        let guid = req.params.guid
         db.Game.findOrCreate({
             where: {
                 title: gameName
             }
         }).then(function(game) {
             res.json(game);
-            if (game[1] === false) {
-                addGameData();
-            }
+            // if (game[1] === true) {
+            //     addGameData(game[0].id, guid);
+            // }
         });
     });
 
@@ -78,6 +79,10 @@ module.exports = function(app) {
                 res.json(response.data);
             });
     });
-
-    // function addGameData();
 };
+
+// function addGameData(gameId, guid) {
+//     db.Game.update(
+        
+//     )
+// };
