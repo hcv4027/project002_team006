@@ -5,6 +5,7 @@ module.exports = function(app) {
     app.get("/", function(req, res) {
         res.render("index");
     });
+
     // Route for pulling collection
     app.get("/api/collection/:id", function(req, res) {
         let userId = req.params.id;
@@ -19,6 +20,22 @@ module.exports = function(app) {
             })
         });
     });
+
+    // Route for looking up a game in the Games table, and creating a new row if the game does not exist
+    app.get("/api/game/:gamename", function(req, res) {
+        let gameName = req.params.gamename;
+        db.Game.findOrCreate({
+            where: {
+                title: gameName
+            }
+        }).then(function(game) {
+            res.json(game);
+            if (game[1] === false) {
+                addGameData();
+            }
+        });
+    });
+
     // Route for adding a game to a collection
     app.get("/api/collection/:userId/add/:gameId", function(req,res) {
         let userId = req.params.userId;
@@ -32,6 +49,7 @@ module.exports = function(app) {
             });
         });
     });
+
     // Route for a user login/creation.
     app.get("/api/user/:username", function(req, res) {
         let userName = req.params.username;
@@ -48,6 +66,7 @@ module.exports = function(app) {
             // res.render("index", handlebarsObj);
         });
     });
+
     // Route for running the search query
     app.get("/api/search/:gametitle", function(req, res) {
         let gametitle = req.params.gametitle
@@ -59,4 +78,6 @@ module.exports = function(app) {
                 res.json(response.data);
             });
     });
+
+    // function addGameData();
 };

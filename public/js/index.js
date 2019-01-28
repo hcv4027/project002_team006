@@ -1,5 +1,5 @@
 let userId;
-
+let gameId;
 // Prompt the user for their username upon page load.
 $(document).ready(function() {
     // Initialize Materialize modal
@@ -32,6 +32,7 @@ function usernameSelect() {
                         // Display the returned username in the appropriate div element.
                         let usernameDiv = $('#username');
                         usernameDiv.append(result[0].username);
+                        showCollection();
                     }
                 );
         });
@@ -53,7 +54,6 @@ function gameSearch() {
                 console.log("Boxart URL is: "+response.results[0].image.icon_url);
                 console.log("First platform listed is: "+response.results[0].platforms[0].abbreviation);
                 console.log("Guid is: "+response.results[0].guid);
-                
                 // Big block of table construction using jQuery!  This will create a table displaying the results of the search query, with buttons to add a game to your collection.
                 let resultsTableDiv = $('#searchResults');
                 let resultsTableMain = $('<table>');
@@ -96,4 +96,14 @@ function gameSearch() {
             });
         }
     });
+}
+
+function addToCollection() {
+    $("#addToCollection").on("click", function() {
+        $.ajax('/api/collection/'+userId+'/add/'+gameId)
+    });
+}
+
+function showCollection() {
+
 }
