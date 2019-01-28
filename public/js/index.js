@@ -139,49 +139,66 @@ function addToCollection() {
 }
 
 function showCollection() {
-    $.ajax('/api/collection/'+userId).then(function(response){
+    $.ajax('/api/collection/'+userId).then(function(collection) {
         // Big block of table construction using jQuery!  This will create a table displaying the user's collection, with buttons to remove a game from your collection.
         let resultsTableDiv = $('#collection');
         let resultsTableMain = $('<table>');
         let resultsTableBody = $('<tbody>');
         resultsTableDiv.append(resultsTableMain);
         resultsTableDiv.append(resultsTableBody);
-        // for (let i = 0; i < response.collection.length; i++) {
-        //     let currentResults = response.collection[i];
-        //     let resultsTableRow = $('<tr>');
-        //     resultsTableDiv.append(resultsTableRow);
-        //     let resultsTableBoxartDisplay = $('<td>');
-        //     let resultsTableBoxart = $('<img>');
-        //     resultsTableBoxart.attr('src', currentResults.image.icon_url);
-        //     resultsTableBoxartDisplay.append(resultsTableBoxart);
-        //     resultsTableDiv.append(resultsTableBoxartDisplay);
-        //     let resultsTableNameDisplay = $('<td>');
-        //     let resultsTableName = currentResults.name;
-        //     // Store the Title of the game for use in collection add
-        //     resultsTableNameDisplay.attr("data-name"+i, currentResults.name);
-        //     resultsTableNameDisplay.attr("id", "collectionGameResult"+i);
-        //     resultsTableNameDisplay.append(resultsTableName);
-        //     resultsTableDiv.append(resultsTableNameDisplay);
-        //     let resultsTablePlatformsDisplay = $('<td>');
-        //     for (let j = 0; j < currentResults.platforms.length; j++) {
-        //         let platformLoop = currentResults.platforms[j].abbreviation;
-        //         resultsTablePlatformsDisplay.append(platformLoop);
-        //         if (j < (currentResults.platforms.length - 1)) {
-        //             resultsTablePlatformsDisplay.append(" / ");
-        //         }
-        //     }
-        //     resultsTableDiv.append(resultsTablePlatformsDisplay);
-        //     let resultsTableButtonDisplay = $('<td>');
-        //     let resultsTableButton = $('<a>');
-        //     resultsTableButton.addClass("btn-floating btn-small waves-effect waves-light grey darken-1 removeFromCollection");
-        //     resultsTableButton.attr("data-guid", currentResults.guid);
-        //     resultsTableButton.attr("data-resultId", i);
-        //     let resultsTableButtonIcon = $('<i>');
-        //     resultsTableButtonIcon.addClass("material-icons")
-        //     resultsTableButtonIcon.append("delete_forever")
-        //     resultsTableButton.append(resultsTableButtonIcon);
-        //     resultsTableButtonDisplay.append(resultsTableButton);
-        //     resultsTableDiv.append(resultsTableButtonDisplay);
-        // }
+        console.log("collection object result is ");
+        console.log(collection);
+        console.log("---------------");
+        for (let i = 0; i < collection.collection.length; i++) {
+            console.log("Guid extracted from collection object is: "+collection.collection[i].guid);
+            $.ajax('/api/gamelookup/'+collection.collection[i].guid)
+                .then(function(response) {
+                    console.log(response);
+                    let currentResults = response.results;
+                    let resultsTableRow = $('<tr>');
+                    resultsTableDiv.append(resultsTableRow);
+                    let resultsTableBoxartDisplay = $('<td>');
+                    let resultsTableBoxart = $('<img>');
+                    resultsTableBoxart.attr('src', currentResults.image.icon_url);
+                    resultsTableBoxart.attr("data-boxart"+i, currentResults.image.icon_url);
+                    resultsTableBoxartDisplay.append(resultsTableBoxart);
+                    resultsTableDiv.append(resultsTableBoxartDisplay);
+                    let resultsTableNameDisplay = $('<td>');
+                    let resultsTableName = currentResults.name;
+                    // Store the Title of the game for use in collection add
+                    resultsTableNameDisplay.attr("data-name"+i, currentResults.name);
+                    resultsTableNameDisplay.attr("id", "collectionGameNameResult"+i);
+                    resultsTableNameDisplay.append(resultsTableName);
+                    resultsTableDiv.append(resultsTableNameDisplay);
+                    let resultsTablePlatformsDisplay = $('<td>');
+                    let currentResultsPlatformLength;
+                    if (currentResults.platforms === null) {
+                        currentResultsPlatformLength = 0;
+                    } else {
+                        currentResultsPlatformLength = currentResults.platforms.length;
+                    };
+                    console.log("Result "+i+" platforms.length is "+currentResultsPlatformLength);
+                    for (let j = 0; j < currentResultsPlatformLength; j++) {
+                        let platformLoop = currentResults.platforms[j].abbreviation;
+                        resultsTablePlatformsDisplay.append(platformLoop);
+                        resultsTablePlatformsDisplay.attr("data-platforms"+i+j, platformLoop);
+                        if (j < (currentResults.platforms.length - 1)) {
+                            resultsTablePlatformsDisplay.append(" / ");
+                        }
+                    }
+                    resultsTableDiv.append(resultsTablePlatformsDisplay);
+                    let resultsTableButtonDisplay = $('<td>');
+                    let resultsTableButton = $('<a>');
+                    resultsTableButton.addClass("btn-floating btn-small waves-effect waves-light grey darken-1 removeFromCollection");
+                    resultsTableButton.attr("data-guid", currentResults.guid);
+                    resultsTableButton.attr("data-resultId", i);
+                    let resultsTableButtonIcon = $('<i>');
+                    resultsTableButtonIcon.addClass("material-icons")
+                    resultsTableButtonIcon.append("delete_forever")
+                    resultsTableButton.append(resultsTableButtonIcon);
+                    resultsTableButtonDisplay.append(resultsTableButton);
+                    resultsTableDiv.append(resultsTableButtonDisplay);
+                });
+        };
     });
-}
+};

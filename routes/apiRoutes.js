@@ -77,4 +77,15 @@ module.exports = function(app) {
                 res.json(response.data);
             });
     });
+
+    // Route for running the Game query to the GB API
+    app.get("/api/gamelookup/:guid", function(req, res) {
+        let guid = req.params.guid
+        let queryURL = "https://www.giantbomb.com/api/game/"+guid+"/?api_key="+process.env.API+"&format=json&field_list=name,image,platforms"
+        axios
+            .get(queryURL)
+            .then(function(response) {
+                res.json(response.data);
+            })
+    })
 };
