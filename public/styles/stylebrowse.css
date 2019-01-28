@@ -1,0 +1,48 @@
+/* Page header stuff: */
+  .masthead .ui.menu .ui.button {
+    margin-left: 0.5em;
+  }
+  
+  .masthead h1.ui.header {
+    font-size: 4em;
+    font-weight: normal;
+  }
+  
+  .ui.vertical.stripe {
+    padding: 8em 0em;
+  }
+  
+  .ui.vertical.stripe h3 {
+    font-size: 2em;
+  }
+  
+  .ui.vertical.segment {
+    margin: 0em;
+  }
+  
+  .footer.segment {
+    padding: 5em 0em;
+  }
+
+/* Main content stuff */
+
+#welcome {
+    padding: 0 2em 2em 2em;
+    font-size: 36px;
+}
+
+#giantSearchBarBackground {
+    background-image:url(../images/search64background.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#giantSearchBarContainer {
+    height:100vh;
+    width: 100%;
+}
+
+#giantSearchBar {
+    align-self: center !important;
+    width: 70%;
+}

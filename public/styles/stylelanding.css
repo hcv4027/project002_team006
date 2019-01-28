@@ -1,0 +1,36 @@
+.list-group-item {
+  line-height: 2.5;
+}
+/* What is this? ^ */
+
+/* Altered CSS landing page */
+.masthead.segment {
+  min-height: 700px;
+}
+
+.masthead .ui.menu .ui.button {
+  margin-left: 0.5em;
+}
+
+.masthead h1.ui.header {
+  margin-top: 3em;
+  margin-bottom: 0em;
+  font-size: 4em;
+  font-weight: normal;
+}
+
+.ui.vertical.stripe {
+  padding: 8em 0em;
+}
+
+.ui.vertical.stripe h3 {
+  font-size: 2em;
+}
+
+.ui.vertical.segment {
+  margin: 0em;
+}
+
+.footer.segment {
+  padding: 5em 0em;
+}

@@ -1,0 +1,15 @@
+body {
+    background-color: #202122;
+}
+.ui.segment{
+    font-size: 1rem;
+}
+.column {
+    
+    max-width: 450px;
+}
+
+#loginContainer {
+    height: 100vh;
+    align-self: center !important;
+}
