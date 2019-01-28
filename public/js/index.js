@@ -16,6 +16,7 @@ $(document).ready(function() {
 // On clicking the Submit button, this will run the API route for user login/creation.  Returned object will be used to populate #username, as well as store the userId global variable for later use.
 function usernameSelect() {
     $('#usernameInput').on("click", function(event){
+        if (userId == null) {
             // Pull username string out of text input
             let userCheck = $('#usernameText').val().trim();
             // Hit API and run the route for user login/creation
@@ -35,6 +36,7 @@ function usernameSelect() {
                         // showCollection();
                     }
                 );
+            }
         });
 }
 
@@ -124,6 +126,7 @@ function addToCollection() {
                     .then(function(response) {
                         console.log("Add to collection response is:");
                         console.log(response);
+                        $("#searchResults").empty();
                     });
             });
     });
